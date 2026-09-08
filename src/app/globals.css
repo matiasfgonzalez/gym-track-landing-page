@@ -1,26 +1,267 @@
 @import "tailwindcss";
 
+/*
+ * Los mismos tokens que la app.
+ *
+ * El sitio y GymTrack tienen que sentirse la misma cosa: mismo carbón de fondo,
+ * misma lima para la acción, mismo ámbar reservado para los récords y la misma
+ * tipografía condensada en los números.
+ */
+@theme {
+  --color-ink: #060907;
+  --color-bg: #0a0e0c;
+  --color-elevated: #111714;
+  --color-surface: #151c18;
+  --color-surface-hi: #1d2621;
+  --color-line: #242e28;
+  --color-line-strong: #33413a;
+  --color-text: #f2f6f3;
+  --color-muted: #9aa8a0;
+  --color-faint: #66756d;
+  --color-lime: #b8ff3c;
+  --color-lime-deep: #22c55e;
+  --color-amber: #ffb020;
+
+  --font-display: var(--font-condensed), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-body), system-ui, sans-serif;
+}
+
+/* Tipografía fluida: una sola escala que crece con el ancho, sin saltos. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --hero: clamp(2.9rem, 8.2vw, 6.4rem);
+  --h2: clamp(2rem, 4.6vw, 3.4rem);
+  --h3: clamp(1.35rem, 2.4vw, 1.9rem);
+  --lede: clamp(1.05rem, 1.6vw, 1.3rem);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  min-width: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Piezas que se repiten                                               */
+/* ------------------------------------------------------------------ */
+
+/** Etiqueta chica en mayúsculas: el rótulo de instrumental de la app. */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-line-strong),
+    var(--color-line) 45%,
+    transparent
+  );
+}
+
+/** La caja con borde y divisores: el panel de cifras de las historias. */
+.panel {
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--color-elevated) 70%, transparent);
+}
+
+/**
+ * Retícula de puntos.
+ *
+ * Es la misma que llevan los fondos de las historias, y acá cumple la misma
+ * función: rompe el degradé plano sin competir con el texto.
+ */
+.grid-dots {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--color-text) 9%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 34px 34px;
+}
+
+/** Números tabulares: las cifras no bailan al cambiar. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Entrada suave, una sola vez, y nada si pediste menos movimiento. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Páginas legales                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Un solo bloque de estilos para privacidad, términos y ayuda.
+ *
+ * Son textos largos que se leen de arriba abajo: medida corta, jerarquía clara
+ * y nada de adornos. Lo importante es que se entiendan, no que impresionen.
+ */
+.legal {
+  max-width: 46rem;
+}
+
+.legal h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.1;
+  margin-top: 3rem;
+  margin-bottom: 0.85rem;
+  scroll-margin-top: 5rem;
+}
+
+.legal h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal p,
+.legal li {
+  color: var(--color-muted);
+}
+
+.legal p {
+  margin-bottom: 1rem;
+}
+
+.legal ul,
+.legal ol {
+  margin: 0 0 1.25rem 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.legal ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.legal ul > li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.legal ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-lime);
+}
+
+.legal ol {
+  list-style: decimal;
+}
+
+.legal strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.legal a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line-strong);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s;
+}
+
+.legal a:hover {
+  text-decoration-color: var(--color-lime);
+}
+
+.legal table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.925rem;
+}
+
+.legal th,
+.legal td {
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.7rem 0.9rem 0.7rem 0;
+  text-align: left;
+  vertical-align: top;
+  color: var(--color-muted);
+}
+
+.legal th {
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
 }
