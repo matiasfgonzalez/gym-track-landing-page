@@ -25,6 +25,7 @@ const columns = [
     title: "Ayuda",
     links: [
       { href: "/soporte", label: "Soporte y preguntas" },
+      { href: "/demo", label: "Video de la app" },
       { href: `mailto:${site.email}`, label: "Escribirnos" },
     ],
   },
