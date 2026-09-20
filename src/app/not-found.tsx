@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col items-start px-5 py-28 sm:px-8">
       <p className="eyebrow">Error 404</p>
-      <h1 className="display mt-4 text-[length:var(--h2)]">
+      <h1 className="display mt-4 text-(length:--h2)">
         Esta página no existe.
       </h1>
       <p className="mt-4 max-w-md text-muted">

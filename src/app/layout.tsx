@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 
+import { Aurora } from "@/components/Aurora";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { site } from "@/lib/site";
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Ir al contenido
         </a>
+        <Aurora />
         <Header />
         <main id="contenido">{children}</main>
         <Footer />

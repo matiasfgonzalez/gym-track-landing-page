@@ -82,6 +82,28 @@ un servidor, conviene que los revise alguien del rubro.
 
 ## Diseño
 
+Tres estilos combinados, cada uno con un trabajo asignado para que no se peleen:
+
+| Capa | Estilo | Dónde |
+|---|---|---|
+| Fondo | **Aurora** | Tres manchas de luz verdes que derivan despacio (`.aurora`). Solo fondo, nunca detrás de texto chico. |
+| Superficies | **Glassmorphism** | Las tarjetas y la barra superior (`.glass`). Desenfocan lo que tienen detrás, así cada una se ve distinta según dónde esté. |
+| Controles | **Neumorfismo** | Las piezas chicas y sólidas: cifras, insignias de ícono, el botón del menú (`.neu`). En superficies grandes se vuelve barro, por eso no se usa ahí. |
+
+Dos decisiones que conviene no deshacer sin pensarlo:
+
+- **La aurora son degradés radiales, no `filter: blur()`.** Un desenfoque del
+  tamaño de la pantalla se recalcula en cada cuadro y se siente en un teléfono
+  de gama media. El degradé ya sale suave y no cuesta nada.
+- **En pantallas de menos de 640 px el vidrio no desenfoca.** Queda la
+  transparencia, que es lo que hace el efecto, y se va el `backdrop-filter`, que
+  es lo que cuesta al hacer scroll.
+
+El ámbar aparece **una sola vez** en todo el sitio, en el ícono de "Récords
+personales", porque adentro de la app el ámbar significa exactamente eso.
+
+## Marca
+
 Los mismos tokens que la app: carbón `#0A0E0C` de fondo, lima `#B8FF3C` para la
 acción, ámbar `#FFB020` reservado para los récords, y Barlow Condensed para los
 números. El anillo de la portada es el mismo dial que llevan las imágenes que
