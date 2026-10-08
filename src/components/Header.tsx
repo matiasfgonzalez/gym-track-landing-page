@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Menu } from "lucide-react";
 
 import { Mark } from "@/components/Mark";
+import { MobileMenu } from "@/components/MobileMenu";
 import { site } from "@/lib/site";
 
 const links = [
@@ -18,8 +18,8 @@ const links = [
  * seco y se vería pegada encima. Con el desenfoque, el color de abajo la
  * atraviesa y la barra pertenece a la página.
  *
- * El menú de pantallas chicas es un `<details>` y no un botón con estado: abre
- * y cierra sin una línea de JavaScript, y el teclado lo maneja el navegador.
+ * A la derecha va la acción principal del sitio, la misma que en la portada y
+ * en el cierre: un solo nombre para una sola cosa.
  */
 export function Header() {
   return (
@@ -27,7 +27,7 @@ export function Header() {
       <div className="glass relative mx-auto flex h-14 w-full max-w-6xl items-center gap-4 rounded-2xl px-3 sm:h-16 sm:px-5">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2.5"
+          className="press flex shrink-0 items-center gap-2.5"
           aria-label={`${site.name}, inicio`}
         >
           <Mark className="h-6 w-auto" />
@@ -48,35 +48,16 @@ export function Header() {
           ))}
         </nav>
 
-        <Link
-          href="/privacidad"
-          className="ml-auto hidden shrink-0 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2 text-sm font-semibold text-text transition-colors hover:border-lime/40 hover:text-lime sm:block md:ml-0"
+        <a
+          href={site.testerHref}
+          className="press ml-auto hidden shrink-0 rounded-xl bg-lime px-4 py-2 font-display text-base tracking-wide text-ink sm:block md:ml-2"
         >
-          Privacidad
-        </Link>
+          QUIERO PROBARLA
+        </a>
 
-        <details className="group ml-auto shrink-0 md:hidden">
-          <summary
-            className="neu grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl text-text"
-            aria-label="Abrir el menú"
-          >
-            <Menu size={18} strokeWidth={2.2} aria-hidden />
-          </summary>
-
-          <div className="glass absolute left-0 right-0 top-[calc(100%+0.5rem)] grid gap-1 rounded-2xl p-2">
-            {[...links, { href: "/privacidad", label: "Privacidad" }, { href: "/soporte", label: "Soporte" }].map(
-              (link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-white/5 hover:text-text"
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
-          </div>
-        </details>
+        <MobileMenu
+          links={[...links, { href: "/privacidad", label: "Privacidad" }, { href: "/soporte", label: "Soporte" }]}
+        />
       </div>
     </header>
   );

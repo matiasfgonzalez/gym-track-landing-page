@@ -59,6 +59,8 @@ export function Dial({
           strokeDasharray={`${circumference * filled} ${circumference}`}
           transform={`rotate(-90 ${half} ${half})`}
           opacity={0.85}
+          className="dial-arc"
+          style={{ "--arc": circumference * filled } as React.CSSProperties}
         />
       </svg>
       <div className="relative z-10 text-center">{children}</div>

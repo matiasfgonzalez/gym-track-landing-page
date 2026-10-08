@@ -1,24 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  ArrowRight,
   BellRing,
+  Check,
   CloudOff,
   Download,
-  Dumbbell,
-  Flame,
   History,
   ListChecks,
   MapPin,
   PlayCircle,
   Repeat2,
   ShieldCheck,
-  Timer,
   TrendingUp,
   Trophy,
 } from "lucide-react";
 
+import { Dial } from "@/components/Dial";
+import { Mark } from "@/components/Mark";
 import { Phone } from "@/components/Phone";
 import { SectionHead } from "@/components/SectionHead";
+import { StepsStory } from "@/components/StepsStory";
 import { site, thirdParties } from "@/lib/site";
 
 /* ------------------------------------------------------------------ */
@@ -35,75 +37,22 @@ const stats = [
 /** Los tres momentos de un entrenamiento, con la pantalla que le toca a cada uno. */
 const steps = [
   {
-    n: "01",
     title: "Abrís y ya sabés qué toca",
     body: "La rutina del día en la primera pantalla, con los ejercicios que trae y cuánto llevás esta semana. Un toque y arrancaste.",
     src: "/app/inicio.webp",
     alt: "Pantalla de inicio de GymTrack con la rutina del día, las figuras de sus ejercicios y el resumen de la semana.",
   },
   {
-    n: "02",
     title: "Registrás sin pensar",
     body: "Peso y reps con el pulgar, y al lado lo que levantaste la última vez. El descanso arranca solo cuando cerrás la serie.",
     src: "/app/serie.webp",
     alt: "Pantalla de entrenamiento con el peso en 35 kg, 13 repeticiones, la marca de la última vez y el descanso corriendo.",
   },
   {
-    n: "03",
     title: "Y ves si estás progresando",
     body: "Volumen por semana, récords personales y la evolución de cada ejercicio. Los números que dicen si el plan funciona.",
     src: "/app/progreso.webp",
     alt: "Pantalla de perfil con el peso corporal, la lista de récords personales y los accesos a progreso.",
-  },
-];
-
-const features: {
-  Icon: typeof History;
-  title: string;
-  body: string;
-  tint?: string;
-}[] = [
-  {
-    Icon: History,
-    title: "La última vez",
-    body: "Cuánto levantaste la vez pasada, al lado de la serie que estás por hacer. Sin ir a buscarlo al historial.",
-  },
-  {
-    Icon: Timer,
-    title: "Descanso que avisa",
-    body: "Arranca solo al cerrar la serie. Suena, vibra y te notifica aunque tengas la pantalla apagada.",
-  },
-  {
-    Icon: TrendingUp,
-    title: "Te sugiere cuándo subir",
-    body: "Si cerraste el rango de repeticiones, te propone el próximo peso. Conservador: solo cuando te lo ganaste.",
-  },
-  {
-    Icon: Trophy,
-    title: "Récords personales",
-    body: "El peso máximo, el 1RM estimado y el día que lo conseguiste. El ámbar de la app es solo para eso.",
-    // el único ámbar del sitio, y significa lo mismo que adentro de la app
-    tint: "text-amber" as const,
-  },
-  {
-    Icon: ListChecks,
-    title: "Rutinas como las armás vos",
-    body: "Superseries, calentamiento que no suma volumen, RPE y plantillas listas para empezar hoy.",
-  },
-  {
-    Icon: MapPin,
-    title: "Salir a correr",
-    body: "GPS, ritmo, vueltas automáticas y el mapa del recorrido. Sigue midiendo con la pantalla apagada.",
-  },
-  {
-    Icon: Flame,
-    title: "Compartir el entrenamiento",
-    body: "Cinco plantillas para historias, en 1080 × 1920. Cuando rompés un récord, se nota.",
-  },
-  {
-    Icon: Download,
-    title: "El backup es tuyo",
-    body: "Un JSON que te llevás a otro teléfono cuando quieras, y exportación a CSV para abrirlo en Excel.",
   },
 ];
 
@@ -115,6 +64,10 @@ const faqs = [
   {
     q: "¿Tengo que crearme una cuenta?",
     a: "No hay cuentas. Abrís la app y ya está: no pide correo, ni contraseña, ni número de teléfono.",
+  },
+  {
+    q: "¿En qué teléfonos funciona?",
+    a: "En Android 7.0 o superior. Ocupa unos 40 MB y no tiene compras dentro de la app.",
   },
   {
     q: "¿Cómo paso mis datos a otro teléfono?",
@@ -134,63 +87,71 @@ export default function Home() {
       {/* ---------------------------------------------------------------- */}
       {/* Portada                                                          */}
       {/* ---------------------------------------------------------------- */}
-      <section className="relative overflow-hidden px-(--gutter) pb-20 pt-14 sm:pb-28 sm:pt-20">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
-          <div className="rise">
-            <p className="glass-soft inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wide text-muted">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime" aria-hidden />
-              ANDROID · GRATIS · SIN CUENTAS
+      <section className="relative overflow-hidden px-(--gutter) pb-20 pt-12 sm:pb-28 sm:pt-16">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+          <div>
+            <p className="rise glass-soft inline-flex rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-wide text-muted">
+              Pronto en Google Play · gratis y sin cuentas
             </p>
 
-            <h1 className="display mt-6 text-(length:--hero)">
-              Tu cuaderno de entrenamiento,{" "}
-              <span className="grad-lime">en tu teléfono</span> y en ningún otro lado.
+            <h1 className="rise display mt-6 max-w-[13ch] text-(length:--hero)" style={{ animationDelay: "60ms" }}>
+              Tu cuaderno de entrenamiento, <span className="grad-lime">en tu teléfono.</span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-(length:--lede) text-muted">
-              Rutinas, series, récords y salidas a correr. GymTrack abre, anota y
-              cierra apoyado en el banco del gimnasio: sin registro, sin nube y sin
-              depender de la señal que ahí abajo nunca hay.
+            <p className="rise mt-6 max-w-md text-(length:--lede) text-muted" style={{ animationDelay: "120ms" }}>
+              Rutinas, series, récords y salidas a correr. Sin registro, sin nube y sin
+              depender de la señal del gimnasio.
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <span className="glow-lime inline-flex items-center gap-2.5 rounded-2xl bg-lime px-6 py-3.5 font-display text-lg tracking-wide text-ink">
-                <Dumbbell size={20} strokeWidth={2.4} aria-hidden />
-                PRONTO EN GOOGLE PLAY
-              </span>
+            <div className="rise mt-9 flex flex-wrap items-center gap-3" style={{ animationDelay: "180ms" }}>
+              <a
+                href={site.testerHref}
+                className="press glow-lime group inline-flex items-center gap-2.5 rounded-2xl bg-lime px-6 py-3.5 font-display text-lg tracking-wide text-ink"
+              >
+                QUIERO PROBARLA
+                <ArrowRight
+                  size={19}
+                  strokeWidth={2.4}
+                  className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </a>
               <Link
                 href="#video"
-                className="glass glass-hover inline-flex items-center gap-2.5 rounded-2xl px-5 py-3.5 text-sm font-semibold"
+                className="press glass glass-hover inline-flex items-center gap-2.5 rounded-2xl px-5 py-3.5 text-sm font-semibold"
               >
                 <PlayCircle size={19} strokeWidth={2} aria-hidden />
                 Ver la app andando
               </Link>
             </div>
-
-            <p className="mt-5 text-sm text-faint">
-              Android 7.0 o superior · unos 40 MB · sin compras dentro de la app.
-            </p>
           </div>
 
           {/* La pantalla que mejor explica la app: la serie en curso */}
-          <div className="rise relative mx-auto w-full max-w-[19rem]" style={{ animationDelay: "140ms" }}>
+          <div className="rise relative mx-auto w-full max-w-[18rem]" style={{ animationDelay: "160ms" }}>
             <Phone
               src="/app/serie.webp"
               alt="Pantalla de entrenamiento de GymTrack: peso 35 kg, 13 repeticiones, la marca de la última vez y el descanso en 2:20."
               priority
-              sizes="(min-width: 1024px) 19rem, 70vw"
+              sizes="(min-width: 1024px) 18rem, 70vw"
             />
 
-            {/* Dos cifras reales de esa misma pantalla, flotando. En pantallas
-                chicas se esconden: encima del teléfono taparían lo que muestran. */}
-            <div className="glass absolute -left-8 top-[22%] hidden rounded-2xl px-4 py-3 sm:block">
-              <p className="eyebrow text-[0.6rem]">La última vez</p>
-              <p className="display tabular mt-1 text-2xl">35 × 13</p>
+            {/* Dos cifras reales de esa misma pantalla, flotando sobre el canto.
+                En pantallas chicas se esconden: encima del teléfono taparían lo
+                que muestran. */}
+            <div
+              className="rise chip absolute -left-14 top-[30%] hidden rounded-2xl px-4 py-3 sm:block"
+              style={{ animationDelay: "420ms" }}
+            >
+              <p className="text-[0.7rem] font-medium text-faint">La última vez</p>
+              <p className="display tabular mt-0.5 text-2xl">35 × 13</p>
             </div>
 
-            <div className="glass absolute -right-6 bottom-[16%] hidden rounded-2xl px-4 py-3 sm:block">
-              <p className="eyebrow text-[0.6rem]">Descanso</p>
-              <p className="display tabular mt-1 text-2xl text-lime">2:20</p>
+            <div
+              className="rise chip absolute -right-12 bottom-[24%] hidden rounded-2xl px-4 py-3 sm:block"
+              style={{ animationDelay: "540ms" }}
+            >
+              <p className="text-[0.7rem] font-medium text-faint">Descanso</p>
+              <p className="display tabular mt-0.5 text-2xl text-lime">2:20</p>
             </div>
           </div>
         </div>
@@ -200,13 +161,16 @@ export default function Home() {
       {/* Cifras                                                           */}
       {/* ---------------------------------------------------------------- */}
       <section className="px-(--gutter)">
-        <dl className="reveal mx-auto grid w-full max-w-6xl grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <dl className="reveal mx-auto grid w-full max-w-6xl grid-cols-2 gap-y-8 border-y border-white/8 py-10 md:grid-cols-4">
           {stats.map((stat) => (
             /* el número primero a la vista; en el marcado manda el término, que es
                lo correcto para un dl y lo que lee un lector de pantalla */
-            <div key={stat.label} className="neu flex flex-col rounded-2xl px-4 py-6 text-center">
-              <dt className="eyebrow order-2 mt-1.5 text-[0.62rem]">{stat.label}</dt>
-              <dd className="display tabular order-1 text-4xl text-lime sm:text-5xl">{stat.value}</dd>
+            <div
+              key={stat.label}
+              className="flex flex-col items-center border-white/8 text-center even:border-l md:border-l md:first:border-l-0"
+            >
+              <dt className="order-2 mt-1 text-sm text-muted">{stat.label}</dt>
+              <dd className="display tabular order-1 text-5xl text-text sm:text-6xl">{stat.value}</dd>
             </div>
           ))}
         </dl>
@@ -218,51 +182,108 @@ export default function Home() {
       <section id="producto" className="scroll-mt-24 px-(--gutter) py-24 sm:py-32">
         <div className="mx-auto w-full max-w-6xl">
           <SectionHead
-            eyebrow="Cómo se usa"
             title="Tres pantallas y se terminó el cuaderno de papel."
             lede="Nada de configurar nada antes de empezar. Abrís, entrenás y la app se encarga de acordarse por vos."
           />
-
-          <div className="mt-16 grid gap-12 md:grid-cols-3 md:gap-8">
-            {steps.map((step) => (
-              <article key={step.n} className="reveal">
-                <Phone src={step.src} alt={step.alt} className="mx-auto max-w-[17rem]" />
-                <div className="mt-7 flex items-start gap-4">
-                  <span className="neu display grid h-11 w-11 shrink-0 place-items-center rounded-xl text-lg text-lime">
-                    {step.n}
-                  </span>
-                  <div>
-                    <h3 className="display text-(length:--h3)">{step.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <StepsStory steps={steps} />
         </div>
       </section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Funciones                                                        */}
       {/* ---------------------------------------------------------------- */}
-      <section className="px-(--gutter) pb-24 sm:pb-32">
+      {/* Un bento y no ocho tarjetas iguales: lo que más se usa entre serie y
+          serie (el descanso y la última vez) ocupa más lugar, y cada pieza
+          muestra la cifra de la app en vez de describirla. */}
+      <section id="funciones" className="scroll-mt-24 px-(--gutter) pb-24 sm:pb-32">
         <div className="mx-auto w-full max-w-6xl">
           <SectionHead
-            eyebrow="Qué trae"
             title="Todo lo que hace falta entre serie y serie."
             lede="Cada cosa está porque resuelve algo del gimnasio, no porque quedaba bien en la lista de funciones."
           />
 
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map(({ Icon, title, body, tint }) => (
-              <article key={title} className="glass glass-hover reveal rounded-3xl p-6">
-                <span className={`neu grid h-12 w-12 place-items-center rounded-2xl ${tint ?? "text-lime"}`}>
-                  <Icon size={21} strokeWidth={2} aria-hidden />
-                </span>
-                <h3 className="display mt-5 text-(length:--h3)">{title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted">{body}</p>
-              </article>
-            ))}
+            {/* Descanso: la pieza grande, con el dial de la app */}
+            <article className="glass glass-hover reveal flex flex-col rounded-3xl p-6 sm:col-span-2 sm:p-8 lg:row-span-2">
+              <Dial progress={0.62} className="mx-auto aspect-square w-full max-w-[16rem]">
+                <p className="text-sm font-medium text-faint">Descanso</p>
+                <p className="display tabular text-6xl text-lime">2:20</p>
+              </Dial>
+              <div className="mt-auto pt-8">
+                <h3 className="display text-(length:--h3)">Descanso que avisa</h3>
+                <p className="mt-2.5 max-w-sm text-sm leading-relaxed text-muted">
+                  Arranca solo al cerrar la serie. Suena, vibra y te notifica aunque tengas la
+                  pantalla apagada.
+                </p>
+              </div>
+            </article>
+
+            {/* La última vez: la comparación que la app pone al lado de cada serie */}
+            <article className="glass glass-hover reveal flex flex-col justify-between gap-6 rounded-3xl p-6 sm:col-span-2 sm:flex-row sm:items-end sm:p-8">
+              <div>
+                <History size={21} strokeWidth={2} className="text-lime" aria-hidden />
+                <h3 className="display mt-4 text-(length:--h3)">La última vez</h3>
+                <p className="mt-2.5 max-w-xs text-sm leading-relaxed text-muted">
+                  Cuánto levantaste la vez pasada, al lado de la serie que estás por hacer.
+                </p>
+              </div>
+              <div className="neu-inset shrink-0 rounded-2xl px-5 py-4 sm:text-right">
+                <p className="text-xs text-faint">Press de banca, serie 2</p>
+                <p className="display tabular mt-1 text-4xl">
+                  35 <span className="text-faint">×</span> 13
+                </p>
+              </div>
+            </article>
+
+            <article className="glass glass-hover tint-lime reveal rounded-3xl p-6">
+              <TrendingUp size={21} strokeWidth={2} className="text-lime" aria-hidden />
+              <h3 className="display mt-4 text-(length:--h3)">Te sugiere cuándo subir</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                Si cerraste el rango de repeticiones, te propone el próximo peso. Solo cuando te
+                lo ganaste.
+              </p>
+            </article>
+
+            {/* el único ámbar del sitio, y significa lo mismo que adentro de la app */}
+            <article className="glass glass-hover tint-amber reveal rounded-3xl p-6">
+              <Trophy size={21} strokeWidth={2} className="text-amber" aria-hidden />
+              <h3 className="display mt-4 text-(length:--h3)">Récords personales</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                El peso máximo, el 1RM estimado y el día que lo conseguiste.
+              </p>
+            </article>
+
+            {/* Correr: la grilla de puntos hace de mapa sin dibujar uno falso */}
+            <article className="glass glass-hover reveal relative overflow-hidden rounded-3xl p-6 sm:col-span-2 sm:p-8">
+              <div
+                className="grid-dots pointer-events-none absolute inset-0 [mask-image:linear-gradient(110deg,transparent_35%,black)]"
+                aria-hidden
+              />
+              <div className="relative">
+                <MapPin size={21} strokeWidth={2} className="text-lime" aria-hidden />
+                <h3 className="display mt-4 text-(length:--h3)">Salir a correr</h3>
+                <p className="mt-2.5 max-w-sm text-sm leading-relaxed text-muted">
+                  GPS, ritmo, vueltas automáticas y el mapa del recorrido. Sigue midiendo con la
+                  pantalla apagada.
+                </p>
+              </div>
+            </article>
+
+            <article className="glass glass-hover reveal rounded-3xl p-6">
+              <ListChecks size={21} strokeWidth={2} className="text-lime" aria-hidden />
+              <h3 className="display mt-4 text-(length:--h3)">Rutinas a tu manera</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                Superseries, calentamiento que no suma volumen, RPE y plantillas listas.
+              </p>
+            </article>
+
+            <article className="glass glass-hover reveal rounded-3xl p-6">
+              <Download size={21} strokeWidth={2} className="text-lime" aria-hidden />
+              <h3 className="display mt-4 text-(length:--h3)">El backup es tuyo</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                Un JSON que te llevás a otro teléfono, y exportación a CSV para Excel.
+              </p>
+            </article>
           </div>
         </div>
       </section>
@@ -297,7 +318,7 @@ export default function Home() {
                   "Animación completa en la ficha",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-lime" aria-hidden />
+                    <Check size={16} strokeWidth={2.4} className="mt-0.5 shrink-0 text-lime" aria-hidden />
                     {item}
                   </li>
                 ))}
@@ -320,7 +341,6 @@ export default function Home() {
         <div className="mx-auto w-full max-w-6xl">
           <SectionHead
             center
-            eyebrow="En movimiento"
             title="Un minuto mirándola andar."
             lede="Grabación de pantalla real: registrar una serie, el catálogo y una salida a correr."
           />
@@ -348,12 +368,12 @@ export default function Home() {
       <section id="historias" className="scroll-mt-24 px-(--gutter) pb-24 sm:pb-32">
         <div className="mx-auto w-full max-w-6xl">
           <SectionHead
-            eyebrow="Compartir"
             title="Cuando rompés un récord, se nota."
             lede="Al terminar, la app arma una imagen lista para tus historias. Cinco plantillas: la sesión, el récord, el día pesado, la semana y el progreso de un ejercicio."
           />
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-3">
+          {/* escalonadas: las de los costados bajan, como una tira de historias */}
+          <div className="mt-14 grid gap-5 sm:grid-cols-3 sm:items-start">
             {[
               {
                 src: "/historia-record.webp",
@@ -370,8 +390,8 @@ export default function Home() {
                 alt: "Historia de la semana: 32.450 kg de volumen, 4 entrenamientos y 23 ejercicios, con una barra por día.",
                 caption: "Semana",
               },
-            ].map((shot) => (
-              <figure key={shot.src} className="glass reveal rounded-3xl p-3">
+            ].map((shot, i) => (
+              <figure key={shot.src} className={`glass reveal rounded-3xl p-3 ${i === 1 ? "" : "sm:mt-16"}`}>
                 <Image
                   src={shot.src}
                   alt={shot.alt}
@@ -380,7 +400,7 @@ export default function Home() {
                   className="w-full rounded-2xl"
                   sizes="(min-width: 640px) 18rem, 90vw"
                 />
-                <figcaption className="eyebrow py-3 text-center">{shot.caption}</figcaption>
+                <figcaption className="py-3 text-center text-sm font-medium text-muted">{shot.caption}</figcaption>
               </figure>
             ))}
           </div>
@@ -398,8 +418,10 @@ export default function Home() {
                 eyebrow="Tus datos"
                 title={
                   <>
-                    Sin cuentas. Sin nube.{" "}
-                    <span className="grad-lime">Sin anuncios.</span>
+                    {/* cada frase entera en su renglón: "Sin / nube" partido no se lee */}
+                    <span className="whitespace-nowrap">Sin cuentas.</span>{" "}
+                    <span className="whitespace-nowrap">Sin nube.</span>{" "}
+                    <span className="whitespace-nowrap text-lime">Sin anuncios.</span>
                   </>
                 }
                 lede="GymTrack no tiene servidor. Tus entrenamientos, tus récords y el recorrido de tus salidas viven en una base de datos adentro de tu teléfono, y de ahí no salen."
@@ -424,15 +446,20 @@ export default function Home() {
 
               <Link
                 href="/privacidad"
-                className="glass glass-hover mt-9 inline-flex items-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold"
+                className="press glass glass-hover group mt-9 inline-flex items-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold"
               >
                 Leer la política completa
-                <span aria-hidden>→</span>
+                <ArrowRight
+                  size={16}
+                  strokeWidth={2.2}
+                  className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                  aria-hidden
+                />
               </Link>
             </div>
 
             <div className="glass reveal rounded-4xl p-(--gutter) sm:p-8">
-              <h3 className="eyebrow">Lo único que sale del teléfono</h3>
+              <h3 className="display text-(length:--h3)">Lo único que sale del teléfono</h3>
               <ul className="mt-6 divide-y divide-white/8">
                 {thirdParties.map((party) => (
                   <li key={party.name} className="py-4 first:pt-0 last:pb-0">
@@ -455,16 +482,28 @@ export default function Home() {
       {/* Preguntas                                                        */}
       {/* ---------------------------------------------------------------- */}
       <section className="px-(--gutter) pb-24 sm:pb-32">
-        <div className="mx-auto w-full max-w-3xl">
-          <SectionHead center eyebrow="Dudas" title="Lo que más nos preguntan." />
+        <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <SectionHead title="Lo que más nos preguntan." />
+            <p className="mt-5 text-muted">
+              ¿Otra duda?{" "}
+              <Link
+                href="/soporte"
+                className="text-text underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-lime"
+              >
+                En soporte están todas
+              </Link>
+              .
+            </p>
+          </div>
 
-          <div className="mt-12 grid gap-3">
+          <div className="grid gap-3">
             {faqs.map((faq) => (
-              <details key={faq.q} className="glass group rounded-2xl px-5 py-4 sm:px-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg tracking-wide marker:hidden">
+              <details key={faq.q} className="faq glass group rounded-2xl px-5 py-4 sm:px-6">
+                <summary className="press flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg tracking-wide marker:hidden">
                   {faq.q}
                   <span
-                    className="neu grid h-7 w-7 shrink-0 place-items-center rounded-lg text-lime transition-transform group-open:rotate-45"
+                    className="neu grid h-7 w-7 shrink-0 place-items-center rounded-lg text-lime transition-transform duration-200 ease-out group-open:rotate-45"
                     aria-hidden
                   >
                     +
@@ -481,24 +520,29 @@ export default function Home() {
       {/* Cierre                                                           */}
       {/* ---------------------------------------------------------------- */}
       <section className="px-(--gutter) pb-24">
-        <div className="glass mx-auto w-full max-w-4xl rounded-4xl px-(--gutter) py-16 text-center sm:py-20">
-          <h2 className="display mx-auto max-w-2xl text-(length:--h2)">{site.tagline}</h2>
-          <p className="mx-auto mt-5 max-w-lg text-muted">
-            GymTrack está en pruebas cerradas antes de llegar a Google Play. Si
-            querés entrar como tester o tenés una duda, escribinos.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/soporte"
-              className="glow-lime rounded-2xl bg-lime px-6 py-3.5 font-display text-lg tracking-wide text-ink"
+        <div className="glass relative mx-auto w-full max-w-4xl overflow-hidden rounded-4xl px-(--gutter) py-16 text-center sm:py-20">
+          <div
+            className="grid-dots pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_70%_at_50%_0%,black,transparent)]"
+            aria-hidden
+          />
+          <div className="relative">
+            <Mark className="mx-auto h-9 w-auto" />
+            <h2 className="display mx-auto mt-7 max-w-2xl text-(length:--h2)">{site.tagline}</h2>
+            <p className="mx-auto mt-5 max-w-lg text-muted">
+              GymTrack está en pruebas cerradas antes de llegar a Google Play. Si querés
+              entrar como tester, escribinos y te sumamos.
+            </p>
+            <a
+              href={site.testerHref}
+              className="press glow-lime group mt-9 inline-flex items-center gap-2.5 rounded-2xl bg-lime px-6 py-3.5 font-display text-lg tracking-wide text-ink"
             >
               QUIERO PROBARLA
-            </Link>
-            <a
-              href={`mailto:${site.email}`}
-              className="glass glass-hover rounded-2xl px-5 py-3.5 text-sm font-semibold"
-            >
-              Escribirnos
+              <ArrowRight
+                size={19}
+                strokeWidth={2.4}
+                className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                aria-hidden
+              />
             </a>
           </div>
         </div>

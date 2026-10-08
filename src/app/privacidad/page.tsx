@@ -23,8 +23,8 @@ export default function Privacidad() {
           No recolectamos ningún dato personal. No hay registro, no hay servidor
           y no hay publicidad.
         </strong>{" "}
-        Todo lo que anotás —entrenamientos, rutinas, récords, peso corporal y el
-        recorrido de tus salidas— se guarda en una base de datos dentro de tu
+        Todo lo que anotás (entrenamientos, rutinas, récords, peso corporal y el
+        recorrido de tus salidas) se guarda en una base de datos dentro de tu
         teléfono y no se envía a ningún lado.
       </p>
       <p>

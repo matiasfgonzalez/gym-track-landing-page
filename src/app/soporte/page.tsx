@@ -78,15 +78,15 @@ export default function Soporte() {
       <h2 id="mas">Más información</h2>
       <ul>
         <li>
-          <Link href="/privacidad">Política de privacidad</Link> — qué guarda la
+          <Link href="/privacidad">Política de privacidad</Link>: qué guarda la
           app y qué sale del teléfono.
         </li>
         <li>
-          <Link href="/eliminar-datos">Eliminar mis datos</Link> — cómo borrar
+          <Link href="/eliminar-datos">Eliminar mis datos</Link>: cómo borrar
           todo, con y sin desinstalar.
         </li>
         <li>
-          <Link href="/terminos">Términos de uso</Link> — las condiciones, en
+          <Link href="/terminos">Términos de uso</Link>: las condiciones, en
           criollo.
         </li>
       </ul>

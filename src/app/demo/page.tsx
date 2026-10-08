@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "Grabación de pantalla de GymTrack funcionando: registrar una serie, el catálogo de ejercicios y una salida a correr.",
   alternates: { canonical: "/demo" },
   openGraph: {
-    title: "Video de la app — GymTrack",
+    title: "Video de la app · GymTrack",
     description: "Grabación de pantalla de GymTrack funcionando.",
     videos: [{ url: `${site.url}${videoPath}`, type: "video/mp4" }],
   },

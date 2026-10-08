@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 /** Proporción real de las capturas, ya recortadas la barra de estado y la de Android. */
-const W = 746;
-const H = 1464;
+export const W = 746;
+export const H = 1464;
 
 /**
  * Una captura de la app dentro de un teléfono.

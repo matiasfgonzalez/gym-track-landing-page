@@ -17,6 +17,15 @@ export const site = {
   /** El correo de soporte que se publica en la ficha de Play y en el sitio. */
   email: "matiasgonzalez.652@gmail.com",
 
+  /**
+   * La acción principal del sitio mientras la app está en pruebas cerradas:
+   * un correo ya armado para pedir entrar como tester. Cuando salga en Play,
+   * los botones pasan a `playUrl`.
+   */
+  get testerHref() {
+    return `mailto:${this.email}?subject=${encodeURIComponent("Quiero probar GymTrack")}`;
+  },
+
   /** El identificador de la app; el link a Play recién funciona al publicarla. */
   packageName: "com.matutech.gymtrack",
   get playUrl() {
